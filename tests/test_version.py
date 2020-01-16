@@ -1,4 +1,4 @@
-from my_app import __version__
+from waffle_window import __version__
 
 
 def test_version():
