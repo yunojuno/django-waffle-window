@@ -1,6 +1,6 @@
 # django-waffle-window
 
-Django app for managing user groups and django-waffle flags.
+Django app for managing time-bound django-waffle user-flag membership.
 
 ## Background
 
