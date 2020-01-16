@@ -6,7 +6,19 @@ ignore=CVS,.git,.tox,.cache,.venv,frontend
 
 [MESSAGES CONTROL]
 disable=all
-enable=bare-except,broad-except,unused-import,assert-false,assert-outside-tests,deprecated-login-required,deprecated-user-passes-test,direct-logging,import-silk,import-pdb,dangerous-default-value,relative-beyond-top-level,anomalous-backslash-in-string,logging-not-lazy
+enable=
+    bare-except
+    broad-except
+    unused-import
+    assert-false
+    assert-outside-tests
+    direct-logging
+    import-silk
+    import-pdb
+    dangerous-default-value
+    relative-beyond-top-level
+    anomalous-backslash-in-string
+    logging-not-lazy
 
 [REPORTS]
 output-format=text

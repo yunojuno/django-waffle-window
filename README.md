@@ -4,13 +4,20 @@ Django app for managing time-bound django-waffle user-flag membership.
 
 ## Background
 
-If you have used `django-waffle` for managing feature flags, you will probably have come across the challenge of managing which users have access to which flags at what point in time. The underlying model allows you to assign individual users or groups to a flag, leaving you to manage how and when to add users to a flag, or remove users from a flag. Take the following use case:
+If you have used `django-waffle` for managing feature flags, you will probably have come across the
+challenge of managing which users have access to which flags at what point in time. The underlying
+model allows you to assign individual users or groups to a flag, leaving you to manage how and when
+to add users to a flag, or remove users from a flag. Take the following use case:
 
     Give access to user A to feature B for 30 days, starting Monday.
 
-This use case can be challenging to manage at scale. Someone has to remember to turn the flag, and then again to turn it off (which means, in practice, removing the user from the flag, or the flag-enabled group).
+This use case can be challenging to manage at scale. Someone has to remember to turn the flag, and
+then again to turn it off (which means, in practice, removing the user from the flag, or the
+flag-enabled group).
 
-This app attempts to tackle this problem by adding a `FlagMember` model that enables you to set a date window within which a user will be added to a flag, and outside of which they will be removed. The add / remove process is managed via management command.
+This app attempts to tackle this problem by adding a `FlagMember` model that enables you to set a
+date window within which a user will be added to a flag, and outside of which they will be removed.
+The add / remove process is managed via management command.
 
 ```
 $ python manage.py update_flag_membership
@@ -18,7 +25,11 @@ $ python manage.py update_flag_membership
 
 ### Implementation
 
-The flag membership is managed using Django Groups. For each flag, a related group called `WAFFLE_<flag_name>` is created, and assigned to the flag. The management command then runs through each flag, checks the `FlagMember` table for users who are assigned to the flag _on that date_, and assigns them to the relevant group. The user membership window is defined through `FlagMember.start_date` and `FlagMember.end_date`.
+The flag membership is managed using Django Groups. For each flag, a related group called
+`WAFFLE_<flag_name>` is created, and assigned to the flag. The management command then runs through
+each flag, checks the `FlagMember` table for users who are assigned to the flag _on that date_, and
+assigns them to the relevant group. The user membership window is defined through
+`FlagMember.start_date` and `FlagMember.end_date`.
 
 ```python
 class FlagMemberQuerySet(QuerySet):
@@ -66,5 +77,5 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         for flag in Flag.objects.all():
             sync_flag_membership(flag.name)
-            
+
 ```
