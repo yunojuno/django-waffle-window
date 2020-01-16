@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "waffle-window"
-version = "0.1.0"
+version = "0.1.0.dev0"
 description = "Django app for managing user groups and django-waffle flags."
 license = "MIT"
 authors = ["YunoJuno <code@yunojuno.com>"]
