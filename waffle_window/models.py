@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 import logging
-from typing import Any
+from typing import Any, Optional
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
@@ -30,12 +30,12 @@ def sync_flag_membership(flag_name: str) -> int:
     """
     active_members = FlagMember.objects.filter(flag__name=flag_name).active()
     active_members_count = active_members.count()
-    group = get_or_create_flag_group(flag_name)
-    group.user_set.clear()
     if active_members_count > 1000:
         logger.warning(
             "Attempting to sync flag group with %i members.", active_members_count
         )
+    group = get_or_create_flag_group(flag_name)
+    group.user_set.clear()
     group.user_set.add(  # this won't scale for large querysets
         *[m.user for m in active_members]
     )
@@ -102,8 +102,12 @@ class FlagMember(models.Model):
         return f"{self.start_date} to {self.end_date}"
 
     @property
-    def is_active(self) -> bool:
+    def is_active(self) -> Optional[bool]:
         """Return True if today is in the active window."""
+        if not self.start_date:
+            return None
+        if not self.end_date:
+            return None
         return self.start_date <= datetime.date.today() <= self.end_date
 
     def sync(self) -> bool:

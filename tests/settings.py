@@ -10,7 +10,7 @@ SECRET_KEY = "secret"
 
 PROJECT_DIR = path.abspath(path.join(path.dirname(__file__)))
 
-DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": "tests.db"}}
+DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memory:"}}
 
 WAFFLE_FLAG_MODEL = "waffle.Flag"
 
@@ -66,8 +66,7 @@ LOGGING = {
         "waffle_window": {
             "handlers": ["console"],
             "propagate": False,
-            "level": "DEBUG"
+            "level": "DEBUG",
         },
     },
 }
-
